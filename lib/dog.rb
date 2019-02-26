@@ -14,29 +14,29 @@ attr_reader :id
       self.update
     else
       sql = <<-SQL
-        INSERT INTO songs (name, breed)
+        INSERT INTO dogs (name, breed)
         VALUES (?, ?)
       SQL
 
       DB[:conn].execute(sql, self.name, self.breed)
-      @id = DB[:conn].execute("SELECT last_insert_rowid() FROM songs")[0][0]
+      @id = DB[:conn].execute("SELECT last_insert_rowid() FROM dogs")[0][0]
     end
   end
 
   def self.create(name:, breed:)
-    song = Song.new(name, breed)
-    song.save
-    song
+    dog = Dog.new(name, breed)
+    dog.save
+    dog
   end
 
   def self.find_by_id(id)
-    sql = "SELECT * FROM songs WHERE id = ?"
+    sql = "SELECT * FROM dogs WHERE id = ?"
     result = DB[:conn].execute(sql, id)[0]
-    Song.new(result[0], result[1], result[2])
+    Dog.new(result[0], result[1], result[2])
   end
 
   def update
-    sql = "UPDATE songs SET name = ?, breed = ? WHERE id = ?"
+    sql = "UPDATE dogs SET name = ?, breed = ? WHERE id = ?"
     DB[:conn].execute(sql, self.name, self.breed, self.id)
   end
 end
